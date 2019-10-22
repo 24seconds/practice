@@ -9,23 +9,25 @@ body {
   overflow-y: scroll;
   background-color: blanchedalmond;
   margin: 0px;
+  border: 1px solid black;
 }
 
 li {
   margin: 10px 0;
   border: 1px solid black;
+  background-color: white;
   width: 50%;
   height: 100px;
   list-style: none;
 }
 
 .hovered {
-  margin: 0 0 0 40px;
+  margin: 10px 0 10px 40px;
 
 }
 
 .surround {
-  margin: 0 0 0 0 20px;
+  margin: 10px 0 10px 20px;
 
 }
 
@@ -42,7 +44,6 @@ li {
   right: 0;
   width: 50%;
   height: 50%;
-  background-color: white;
   z-index: 15;
 }
 

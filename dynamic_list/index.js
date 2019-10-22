@@ -11,34 +11,38 @@ class ListItem {
   }
 
   onMouseOver() {
-    console.log(`mouse is overed on element ${this.props.index}`);
+    const { index } = this.props;
+    console.log(`mouse is overed on element ${index}`);
+    currentHoveredItem.innerHTML = `current: ${index}`;
+    currentHoveredItem.setAttribute('data-value', index);
 
-    currentHoveredItem.innerHTML = `current: ${this.props.index}`;
-    currentHoveredItem.setAttribute('data-value', this.props.index);
-
-    this.element.style.cursor = "pointer";
     this.element.className = "hovered";
-    this.setSurroundingMargin(20);
+    this.element.style.cursor = "pointer";
+    this.setSurroundingMargin("surround");
   }
 
-  setSurroundingMargin(margin) {
+  setSurroundingMargin(className) {
     const { index } = this.props;
 
-    memo[index - 1] && (memo[index - 1].element.className = "surround");
-    memo[index + 1] && (memo[index + 1].element.className= "surround");
+    memo[index - 1] && (memo[index - 1].element.className = className);
+    memo[index + 1] && (memo[index + 1].element.className = className);
   }
 
   onMouseOut() {
-    console.log(`mouse is out on element ${this.props.index}`);
     currentHoveredItem.innerHTML = `current: -1`;
-    this.element.style.margin = null;
-    this.setSurroundingMargin(0);
+    currentHoveredItem.setAttribute('data-value', -1);
+
+    this.element.className = null;
+    this.setSurroundingMargin(null);
   }
 
   onClick() {
     this.dettachListener()
     this.element.className = "clicked";
+    this.element.style.cursor = null;
     currentHoveredItem.getAttribute('data-value', this.props.index);
+    this.setSurroundingMargin(null);
+
     showPoupRoot()
   }
 
