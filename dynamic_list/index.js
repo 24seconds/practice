@@ -8,6 +8,7 @@ class ListItem {
     const element = document.createElement(tag);
     element.innerHTML = `This is item  ${props.index}`;
     element.onclick = this.onClick.bind(this);
+    element.style.transition = "width 0.2s, margin 0.2s";
     this.element = element;
     this.props = props;
     this.parent = parent;
