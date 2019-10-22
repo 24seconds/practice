@@ -171,7 +171,6 @@ const currentHoveredItem = document.querySelector("#currentHoveredItem");
 const popupRoot = document.querySelector("#popupRoot");
 popupRoot.onclick = function () {
   const listItem = memo[currentHoveredItem.getAttribute(DATA_VALUE)]
-  listItem.element.className = null;
   listItem.attachListener();
   onNotClicked(listItem.element);
   onPopupRootHide(popupRoot);
