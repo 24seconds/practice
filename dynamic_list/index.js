@@ -1,3 +1,8 @@
+const DATA_VALUE = "data-value";
+const HOVERED = "hovered";
+const SURROUND = "surround";
+const CLICKED = "clicked";
+
 class ListItem {
   constructor(tag, parent, props) {
     const element = document.createElement(tag);
@@ -14,11 +19,11 @@ class ListItem {
     const { index } = this.props;
     console.log(`mouse is overed on element ${index}`);
     currentHoveredItem.innerHTML = `current: ${index}`;
-    currentHoveredItem.setAttribute('data-value', index);
+    currentHoveredItem.setAttribute(DATA_VALUE, index);
 
-    this.element.className = "hovered";
+    this.element.className = HOVERED;
     this.element.style.cursor = "pointer";
-    this.setSurroundingMargin("surround");
+    this.setSurroundingMargin(SURROUND);
   }
 
   setSurroundingMargin(className) {
@@ -30,7 +35,7 @@ class ListItem {
 
   onMouseOut() {
     currentHoveredItem.innerHTML = `current: -1`;
-    currentHoveredItem.setAttribute('data-value', -1);
+    currentHoveredItem.setAttribute(DATA_VALUE, -1);
 
     this.element.className = null;
     this.setSurroundingMargin(null);
@@ -38,9 +43,9 @@ class ListItem {
 
   onClick() {
     this.dettachListener()
-    this.element.className = "clicked";
+    this.element.className = CLICKED;
     this.element.style.cursor = null;
-    currentHoveredItem.getAttribute('data-value', this.props.index);
+    currentHoveredItem.getAttribute(DATA_VALUE, this.props.index);
     this.setSurroundingMargin(null);
 
     showPoupRoot()
@@ -71,10 +76,10 @@ const memo = {};
 const currentHoveredItem = document.querySelector("#currentHoveredItem");
 const popupRoot = document.querySelector("#popupRoot");
 popupRoot.onclick = function () {
-  const listItem = memo[currentHoveredItem.getAttribute('data-value')]
+  const listItem = memo[currentHoveredItem.getAttribute(DATA_VALUE)]
   listItem.element.className = null;
   listItem.attachListener();
-  popupRoot.className = "null";
+  popupRoot.className = null;
 }
 
 function render() {
