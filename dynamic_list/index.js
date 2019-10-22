@@ -1,7 +1,4 @@
 const DATA_VALUE = "data-value";
-const HOVERED = "hovered";
-const SURROUND = "surround";
-const CLICKED = "clicked";
 
 class ListItem {
   constructor(tag, parent, props) {
@@ -22,34 +19,36 @@ class ListItem {
     currentHoveredItem.innerHTML = `current: ${index}`;
     currentHoveredItem.setAttribute(DATA_VALUE, index);
 
-    this.element.className = HOVERED;
+    onHovered(this.element)
     this.element.style.cursor = "pointer";
-    this.setSurroundingMargin(SURROUND);
+    this.setSurroundingMargin(false);
   }
 
-  setSurroundingMargin(className) {
+  setSurroundingMargin(shouldReset) {
     const { index } = this.props;
 
-    memo[index - 1] && (memo[index - 1].element.className = className);
-    memo[index + 1] && (memo[index + 1].element.className = className);
+    memo[index - 1] && onSurround(memo[index - 1].element, shouldReset);
+    memo[index + 1] && onSurround(memo[index + 1].element, shouldReset);
   }
 
   onMouseOut() {
     currentHoveredItem.innerHTML = `current: -1`;
     currentHoveredItem.setAttribute(DATA_VALUE, -1);
 
-    this.element.className = null;
-    this.setSurroundingMargin(null);
+    onNotHovered(this.element);
+    this.setSurroundingMargin(true);
   }
 
   onClick() {
     this.dettachListener()
-    this.element.className = CLICKED;
+    onClicked(this.element);
+    onPopupRootShow(popupRoot);
+
     this.element.style.cursor = null;
     currentHoveredItem.getAttribute(DATA_VALUE, this.props.index);
-    this.setSurroundingMargin(null);
+    this.setSurroundingMargin(true);
 
-    showPoupRoot()
+    showPoupRoot(popupRoot);
   }
 
   attachListener() {
@@ -67,8 +66,102 @@ class ListItem {
   }
 }
 
-function showPoupRoot() {
-  popupRoot.className = "popupRoot";
+function showPoupRoot(element) {
+  const style = {
+    width: "100%",
+    height: "100%",
+    "background-color": "#0000001f",
+    position: "absolute",
+    "z-index": "10",
+    "top": "0",
+  }
+
+  for (const key in style) {
+    element.style[key] = style[key];
+  }
+}
+
+function onHovered(element) {
+  element.style.margin = "10px 0 10px 40px";
+}
+
+function onNotHovered(element) {
+  element.style.margin = null;
+}
+
+function onSurround(element, shouldReset = true) {
+  if (shouldReset) {
+    element.style.margin = null;
+  } else {
+    element.style.margin = "10px 0 10px 20px";
+  }
+}
+
+function onClicked(element) {
+  const style = {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    position: "fixed",
+    margin: "auto",
+    top: "0",
+    bottom: "0",
+    left: "0",
+    right: "0",
+    height: "50%",
+    zIndex: "15",
+  }
+
+  for (const key in style) {
+    element.style[key] = style[key];
+  }
+}
+
+function onNotClicked(element) {
+  const style ={
+    display: "list-item",
+    justifyContent: null,
+    position: "static",
+    margin: "0",
+    top: "auto",
+    bottom: "auto",
+    left: "auto",
+    right: "auto",
+    height: "100px",
+    zIndex: "auto",
+  }
+
+  for (const key in style) {
+    element.style[key] = style[key];
+  }
+}
+
+function onPopupRootShow(element) {
+  const style = {
+    width: "100%",
+    height: "100%",
+    "background-color": "#0000001f",
+    position: "absolute",
+    "z-index": "10",
+    top: 0,
+  }
+
+  for (const key in style) {
+    element.style[key] = style[key];
+  }
+}
+
+function onPopupRootHide(element) {
+  const style = {
+    width: 0,
+    height: 0,
+    position: "relative",
+    top: "auto",
+  }
+
+  for (const key in style) {
+    element.style[key] = style[key];
+  }
 }
 
 const container = document.querySelector("#container");
@@ -80,7 +173,8 @@ popupRoot.onclick = function () {
   const listItem = memo[currentHoveredItem.getAttribute(DATA_VALUE)]
   listItem.element.className = null;
   listItem.attachListener();
-  popupRoot.className = null;
+  onNotClicked(listItem.element);
+  onPopupRootHide(popupRoot);
 }
 
 function render() {
