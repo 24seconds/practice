@@ -13,6 +13,8 @@ class ListItem {
     console.log(`mouse is overed on element ${this.props.index}`);
 
     this.element.style.marginLeft = "40px";
+    currentHoveredItem.innerHTML = `current: ${this.props.index}`;
+    currentHoveredItem.setAttribute('data-value', this.props.index);
     this.setSurroundingMargin(20);
   }
 
@@ -26,6 +28,7 @@ class ListItem {
   onMouseOut() {
     console.log(`mouse is out on element ${this.props.index}`);
     this.element.style.marginLeft = "0";
+    currentHoveredItem.innerHTML = `current: -1`;
     this.setSurroundingMargin(0);
   }
 
@@ -37,6 +40,7 @@ class ListItem {
 const container = document.querySelector("#container");
 
 const memo = {};
+const currentHoveredItem = document.querySelector("#currentHoveredItem");
 
 function render() {
   for (let i = 0; i < 100; i ++) {
